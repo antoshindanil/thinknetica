@@ -12,5 +12,5 @@ ideal_weight = (growth - 110) * 1.15
 if ideal_weight >= weight
   puts "#{name}, ваш вес уже оптимальный"
 else
-  puts "#{name}, вам есть к чему стремиться, ваш идеальный весь - #{ideal_weight.to_i}"
+  puts "#{name}, вам есть к чему стремиться, ваш идеальный вес - #{ideal_weight.to_i}"
 end
