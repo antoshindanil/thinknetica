@@ -7,19 +7,11 @@ second_side = gets.chomp.to_f
 puts 'Введите третью сторону треугольника'
 third_side = gets.chomp.to_f
 
-if first_side > second_side && first_side > third_side
-  c_side = first_side
-  a_side = second_side
-  b_side = third_side
-elsif second_side > first_side && second_side > third_side
-  c_side = second_side
-  a_side = first_side
-  b_side = third_side
-else
-  c_side = third_side
-  a_side = first_side
-  b_side = second_side
-end
+array_of_sides = [first_side, second_side, third_side].max(3)
+
+c_side = array_of_sides[0]
+a_side = array_of_sides[1]
+b_side = array_of_sides[2]
 
 if c_side**2 == b_side**2 + a_side**2
   puts 'Данный треугольник является прямоугольным'
