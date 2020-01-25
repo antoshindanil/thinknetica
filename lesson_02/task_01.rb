@@ -14,5 +14,5 @@ year = {
 }
 
 year.each do |key, value|
-  puts "#{key} have #{value} days" if value.to_i == 30
+  puts "#{key} have #{value} days" if value == 30
 end

@@ -11,10 +11,10 @@ days_per_months[1] = 29 if (year % 400).zero? || ((year % 4).zero? && year % 100
 
 result = 0
 
-days_per_months.each_with_index do |value, index|
-  if index + 1 < month
+days_per_months.each.with_index(1) do |value, index|
+  if index < month
     result += value
-  elsif index + 1 == month
+  elsif index == month
     result += day
   end
 end
