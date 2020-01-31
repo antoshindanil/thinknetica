@@ -6,7 +6,7 @@ class Station
     @trains = []
   end
 
-  def add_train(train)
+  def attach_train(train)
     @trains << train
   end
 
@@ -41,7 +41,7 @@ end
 
 class Train
   attr_accessor :speed
-  attr_reader :vagon_count
+  attr_reader :vagon_count, :current_station
 
   def initialize(number, type, vagon_count)
     @number = number
@@ -55,23 +55,23 @@ class Train
 
   def attach_vagon
     if @speed.zero?
-      puts 'Остановите поезд' 
+       @vagon_count += 1
     else
-      @vagon_count += 1
+      puts 'Остановите поезд'
     end
   end
 
   def detach_vagon
     if @speed.zero?
-      puts 'Остановите поезд' 
-    else
       @vagon_count -= 1
+    else
+      puts 'Остановите поезд' 
     end
   end
 
   def add_route(route)
     @current_route = route
-    self.current_station = @current_route.list_of_stations[0]
+    @current_station = @current_route.list_of_stations[0]
     @current_station.attach_train(self)
   end
 
@@ -87,13 +87,13 @@ class Train
 
   def go_next
     @current_station.detach_train(self)
-    self.current_station = self.next_station
+    @current_station = self.next_station
     @current_station.attach_train(self)
   end
 
   def go_previous
     @current_station.detach_train(self)
-    self.current_station = self.previous_station
+    @current_station = self.previous_station
     @current_station.attach_train(self)
   end
 
