@@ -1,4 +1,3 @@
-
 class Route
   attr_reader :list_of_stations
 
@@ -15,5 +14,4 @@ class Route
   def delete(station)
     @list_of_stations.delete(station)
   end
-  
 end

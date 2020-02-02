@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Train
   attr_accessor :speed
-  attr_reader :number, :current_route
+  attr_reader :number, :current_route, :vagons
 
   def initialize(number)
     @number = number
@@ -11,24 +13,20 @@ class Train
   def stop
     @speed = 0
   end
-
-  def vagons
-    @vagons
-  end
-
+  
   def attach_vagon(vagon)
     if @speed.zero?
-       @vagons.push(vagon)
+      @vagons.push(vagon)
     else
       puts 'Остановите поезд'
     end
   end
-  
+
   def detach_vagon
     if @speed.zero?
       @vagons.pop
     else
-      puts 'Остановите поезд' 
+      puts 'Остановите поезд'
     end
   end
 
@@ -40,18 +38,19 @@ class Train
 
   def go_next
     @current_station.detach_train(self)
-    @current_station = self.next_station
+    @current_station = next_station
     @current_station.attach_train(self)
   end
 
   def go_previous
     @current_station.detach_train(self)
-    @current_station = self.previous_station
+    @current_station = previous_station
     @current_station.attach_train(self)
   end
 
   protected
-  #Ненужны для интерфейса
+
+  # Ненужны для интерфейса
 
   def previous_station
     index = @current_route.list_of_stations.index(@current_station) - 1
@@ -62,5 +61,4 @@ class Train
     index = @current_route.list_of_stations.index(@current_station) + 1
     @current_route.list_of_stations[index]
   end
-
 end

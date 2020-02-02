@@ -15,9 +15,9 @@ class Station
   end
 
   private
+
   #В интерфейсе не используется
   def trains_by_type(type)
     @trains.select { |train| train.type == type.type }
   end
-
 end
