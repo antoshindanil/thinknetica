@@ -13,7 +13,7 @@ class Station
     @name = name
     @trains = []
     @@all_instances.push(self)
-    include InstanceCounter
+    register_instance
   end
 
   def attach_train(train)

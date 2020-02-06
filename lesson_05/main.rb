@@ -1,3 +1,5 @@
+require_relative 'railway.rb'
+
 railway = Railway.new
 railway.start
 
