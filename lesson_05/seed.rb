@@ -12,11 +12,9 @@ p 'Class'
 p Train.class_variables
 
  train = Train.new('2222')
-p Train.instances
 
-p train1 = Train.new('123')
-p Train.instances
+ train1 = Train.new('123')
 
-p train2 = Train.new('333')
-p Train.instances
+ train2 = Train.new('333')
 
+p Train.find('23')
