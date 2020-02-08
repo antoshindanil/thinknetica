@@ -21,9 +21,9 @@ class Train
     @number = number
     @speed = 0
     @vagons = []
+    validate!
     @@trains[number] = self
     register_instance
-    validate!
   end
 
   def stop
