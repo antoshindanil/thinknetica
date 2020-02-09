@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'instance_counter.rb'
 require_relative 'validatable.rb'
 
@@ -35,7 +37,7 @@ class Station
 
   def validate!
     raise 'Вы не указали название станции' if @name.nil?
-    raise 'Название станции не должно быть меньше 2 символов' if @name.length < 2
+    raise 'Название станции меньше 2 символов' if @name.length < 2
   end
 
   def trains_by_type(type)

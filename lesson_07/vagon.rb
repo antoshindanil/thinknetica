@@ -11,16 +11,15 @@ class Vagon
   end
 
   def fill(value)
-    if (value + @filled) < @value
-      @filled += value
-    else
-      raise ArgumentError, "Вы пытаетесь занять #{value} объема, а всего у вагона #{@value}"
+    unless (value + @filled) < @value
+      raise ArgumentError, "Вы пытаетесь занять #{value} объема, " \
+        " а всего у вагона #{@value}"
     end
+
+    @filled += value
   end
 
   def free_value
     value - filled
   end
 end
-
-

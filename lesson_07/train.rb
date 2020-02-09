@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer.rb'
 require_relative 'instance_counter.rb'
 require_relative 'validatable.rb'
@@ -9,7 +11,7 @@ class Train
   attr_accessor :speed
   attr_reader :number, :current_route, :vagons
 
-  NUMBER_REGEXP = /^[\w\d]{3}-?[\w\d]{2}$/i
+  NUMBER_REGEXP = /^[\w\d]{3}-?[\w\d]{2}$/i.freeze
 
   @@trains = {}
 
@@ -74,7 +76,9 @@ class Train
 
   def validate!
     raise ArgumentError, "Вы не указали номер поезда #{@number}" if @number.nil?
-    raise ArgumentError, "Вы ввели неверный формат номера #{number}" if number !~ NUMBER_REGEXP
+    if number !~ NUMBER_REGEXP
+      raise ArgumentError, "Вы ввели неверный формат номера #{number}"
+    end
   end
 
   def previous_station

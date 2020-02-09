@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'station.rb'
 require_relative 'route.rb'
 require_relative 'train.rb'
@@ -30,7 +32,6 @@ class Railway
     cargo_train.attach_vagon(CargoVagon.new(42))
 
     passenger_train = PassengerTrain.new('24221')
-    passenger_train.attach_vagon(PassengerVagon.new(140))
     passenger_train.attach_vagon(PassengerVagon.new(3))
     passenger_train.attach_vagon(PassengerVagon.new(1220))
 
@@ -48,30 +49,8 @@ class Railway
   end
 
   def create_train
-    begin
-      puts 'Тип поезда: Cargo или Passenger'
-      type = gets.chomp
-      unless type == 'Cargo'|| type== 'Passenger'
-        raise ArgumentError, 'Неправильный тип'
-      end
-    rescue ArgumentError => e
-      puts e.message
-      retry
-    end
-
-    begin
-      puts 'Введите номер поезда:'
-      number = gets.chomp
-      if type == 'Cargo'
-        train = CargoTrain.new(number)
-      elsif type == 'Passenger'
-        train = PassengerTrain.new(number)
-      end
-    rescue ArgumentError => e
-      puts e.message
-      retry
-    end
-
+    type = select_train_type
+    train = new_train(type)
     puts "Создан поезд номер #{train.number}, тип #{train.class}"
     @trains.push(train)
   end
@@ -134,7 +113,9 @@ class Railway
 
   def stations_list_with_index_and_trains
     @stations.each do |station|
-      puts "Станция #{station.name}, поезда на ней #{station.each_train { |train| puts train}}"
+      puts "Станция #{station.name}, поезда: #{station.each_train do |train|
+        puts train
+      end }"
     end
   end
 
@@ -146,14 +127,19 @@ class Railway
 
   def trains_list
     @trains.each do |train|
-      puts "#{train.class} с номером #{train.number} и маршрутом #{train.current_route}, а также вагонами #{train.vagons}"
+      puts "#{train.class} с номером #{train.number} " \
+        "и маршрутом #{train.current_route}, " \
+        "а также вагонами #{train.vagons}"
     end
   end
 
   def list_train_vagons
     selected_train = select_train(@trains)
     selected_train.each_vagon do |vagon|
-      puts "Номер вагона #{vagon.number}, Тип: #{vagon.class}, Свободный объем: #{vagon.free_value}, Занятый объем: #{vagon.filled}"
+      puts "Номер вагона #{vagon.number}, " \
+        "Тип: #{vagon.class}, " \
+        "Свободный объем: #{vagon.free_value}, " \
+        "Занятый объем: #{vagon.filled}"
     end
   end
 
@@ -162,29 +148,57 @@ class Railway
     selected_station = @stations[index]
 
     selected_station.each_train do |train|
-      puts "Номер поезда: #{train.number}, Тип: #{train.class}, Кол-во вагонов #{train.vagons.length}"
+      puts "Номер поезда: #{train.number}, " \
+        "Тип: #{train.class}, " \
+        "Кол-во вагонов #{train.vagons.length}"
     end
   end
 
   def fill_space_in_vagon
-    begin
-      vagon = select_vagon
-      if vagon.class == CargoVagon
-        puts 'Сколько объема занять?'
-        value = gets.chomp.to_i
-        vagon.fill(value)
-        puts "Теперь объем: #{vagon.value}"
-      elsif vagon.class == PassengerVagon
-        vagon.fill
-        puts "Место увеличилось на 1, теперь оно занимает #{vagon.value}"
-      end
-    rescue ArgumentError => e
-      puts e.message
-      retry
+    vagon = select_vagon
+    if vagon.class == CargoVagon
+      puts 'Сколько объема занять?'
+      value = gets.chomp.to_i
+      vagon.fill(value)
+      puts "Теперь объем: #{vagon.value}"
+    elsif vagon.class == PassengerVagon
+      vagon.fill
+      puts "Место увеличилось на 1, теперь оно занимает #{vagon.value}"
     end
+  rescue ArgumentError => e
+    puts e.message
+    retry
   end
 
   private
+
+  def new_train(type)
+    puts 'Введите номер поезда:'
+    number = gets.chomp
+    if type == 'Cargo'
+      train = CargoTrain.new(number)
+    elsif type == 'Passenger'
+      train = PassengerTrain.new(number)
+    end
+
+    train
+  rescue ArgumentError => e
+    puts e.message
+    retry
+  end
+
+  def select_train_type
+    puts 'Тип поезда: Cargo или Passenger'
+    type = gets.chomp
+    unless type == 'Cargo' || type == 'Passenger'
+      raise ArgumentError, 'Неправильный тип'
+    end
+
+    type
+  rescue ArgumentError => e
+    puts e.message
+    retry
+  end
 
   def select_vagon
     selected_train = select_train(@trains)
@@ -198,7 +212,9 @@ class Railway
 
   def stations_list_with_index(stations)
     stations.map.with_index do |station, index|
-      puts "Имя станции #{station.name}, ее индекс #{index}, кол-во поездов #{station.trains.length}"
+      puts "Имя станции #{station.name}, " \
+        "ее индекс #{index}, " \
+        "кол-во поездов #{station.trains.length}"
     end
   end
 
