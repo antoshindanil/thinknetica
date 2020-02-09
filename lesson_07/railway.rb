@@ -31,7 +31,7 @@ class Railway
 
     passenger_train = PassengerTrain.new('24221')
     passenger_train.attach_vagon(PassengerVagon.new(140))
-    passenger_train.attach_vagon(PassengerVagon.new(10))
+    passenger_train.attach_vagon(PassengerVagon.new(3))
     passenger_train.attach_vagon(PassengerVagon.new(1220))
 
     cargo_train.add_route(route1)
@@ -153,12 +153,7 @@ class Railway
   def list_train_vagons
     selected_train = select_train(@trains)
     selected_train.each_vagon do |vagon|
-      if vagon.class == CargoVagon
-        puts "Номер вагона #{vagon.number}, Тип: #{vagon.class}, Свободный объем: #{vagon.free_value}, Занятый объем: #{vagon.filled_value}"
-
-      elsif vagon.class == PassengerVagon
-        puts "Номер вагона #{vagon.number}, Тип: #{vagon.class}, Свободные места: #{vagon.free_seats}, Занятые места: #{vagon.filled_seats}"
-      end
+      puts "Номер вагона #{vagon.number}, Тип: #{vagon.class}, Свободный объем: #{vagon.free_value}, Занятый объем: #{vagon.filled}"
     end
   end
 
@@ -172,15 +167,20 @@ class Railway
   end
 
   def fill_space_in_vagon
-    vagon = select_vagon
-    if vagon.class == CargoVagon
-      puts 'Сколько объема занять?'
-      value = gets.chomp.to_i
-      vagon.fill_value(value)
-      puts "Теперь объем: #{vagon.value}"
-    elsif vagon.class == PassengerVagon
-      vagon.fill_seat
-      puts "Место увеличилось на 1, теперь оно занимает #{vagon.filled_seats}"
+    begin
+      vagon = select_vagon
+      if vagon.class == CargoVagon
+        puts 'Сколько объема занять?'
+        value = gets.chomp.to_i
+        vagon.fill(value)
+        puts "Теперь объем: #{vagon.value}"
+      elsif vagon.class == PassengerVagon
+        vagon.fill
+        puts "Место увеличилось на 1, теперь оно занимает #{vagon.value}"
+      end
+    rescue ArgumentError => e
+      puts e.message
+      retry
     end
   end
 
@@ -190,15 +190,10 @@ class Railway
     selected_train = select_train(@trains)
     puts 'Введите индекс вагона'
     selected_train.each_vagon do |vagon, index|
-      if vagon.class == CargoVagon
-        puts "Номер вагона #{vagon.number}, его индекс #{index}"
-
-      elsif vagon.class == PassengerVagon
-        puts "Номер вагона #{vagon.number}, его индекс #{index}"
-      end
+      puts "Номер вагона #{vagon.number}, его индекс #{index}"
     end
     vagon_index = gets.chomp.to_i
-    selected_vagon = selected_train.vagons[vagon_index]
+    selected_train.vagons[vagon_index]
   end
 
   def stations_list_with_index(stations)
