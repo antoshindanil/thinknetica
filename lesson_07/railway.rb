@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative 'station.rb'
 require_relative 'route.rb'
 require_relative 'train.rb'
@@ -190,9 +188,7 @@ class Railway
   def select_train_type
     puts 'Тип поезда: Cargo или Passenger'
     type = gets.chomp
-    unless type == 'Cargo' || type == 'Passenger'
-      raise ArgumentError, 'Неправильный тип'
-    end
+    raise ArgumentError, 'Неправильный тип' unless type == 'Cargo' || type == 'Passenger'
 
     type
   rescue ArgumentError => e

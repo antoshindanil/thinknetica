@@ -1,7 +1,4 @@
-# frozen_string_literal: true
-
 require_relative 'railway.rb'
-
 railway = Railway.new
 railway.start
 

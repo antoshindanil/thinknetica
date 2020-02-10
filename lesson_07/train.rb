@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative 'manufacturer.rb'
 require_relative 'instance_counter.rb'
 require_relative 'validatable.rb'
@@ -76,9 +74,7 @@ class Train
 
   def validate!
     raise ArgumentError, "Вы не указали номер поезда #{@number}" if @number.nil?
-    if number !~ NUMBER_REGEXP
-      raise ArgumentError, "Вы ввели неверный формат номера #{number}"
-    end
+    raise ArgumentError, "Вы ввели неверный формат номера #{number}" if number !~ NUMBER_REGEXP
   end
 
   def previous_station
