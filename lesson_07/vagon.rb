@@ -1,8 +1,12 @@
 require_relative 'manufacturer.rb'
+require_relative 'validation.rb'
 
 class Vagon
   include Manufacturer
+  include Validation
   attr_reader :value, :number, :filled
+  validate :value, :presense
+  validate :value, :type, Numeric
 
   def initialize(value)
     @value = value

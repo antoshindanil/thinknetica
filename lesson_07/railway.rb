@@ -239,7 +239,7 @@ class Railway
   end
 
   def create_route_select_station(stations, str)
-    stations_list_with_index(stations)
+    stations_list_wi ~th_index(stations)
     puts "Введите индекс #{str} станции:"
     index = gets.chomp.to_i
     stations[index]

@@ -1,10 +1,16 @@
 require_relative 'instance_counter.rb'
-require_relative 'validatable.rb'
+require_relative 'validation.rb'
 
 class Station
   include InstanceCounter
-  include Validatable
+  include Validation
+
   attr_reader :name, :trains
+
+  validate :name, :presence
+  validate :name, :type, String
+  validate :name, :format, /[\d\w]+/
+
   @@all_instances = []
 
   def self.all
@@ -32,11 +38,6 @@ class Station
   end
 
   private
-
-  def validate!
-    raise 'Вы не указали название станции' if @name.nil?
-    raise 'Название станции меньше 2 символов' if @name.length < 2
-  end
 
   def trains_by_type(type)
     @trains.select { |train| train.type == type.type }

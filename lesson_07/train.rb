@@ -11,6 +11,11 @@ class Train
 
   NUMBER_REGEXP = /^[\w\d]{3}-?[\w\d]{2}$/i.freeze
 
+  validate :number, :presence
+  validate :number, :type, String
+  validate :number, :format, NUMBER_REGEXP
+  validate :type, :presence
+
   @@trains = {}
 
   def self.find(number)
@@ -71,11 +76,6 @@ class Train
   end
 
   protected
-
-  def validate!
-    raise ArgumentError, "Вы не указали номер поезда #{@number}" if @number.nil?
-    raise ArgumentError, "Вы ввели неверный формат номера #{number}" if number !~ NUMBER_REGEXP
-  end
 
   def previous_station
     index = @current_route.list_of_stations.index(@current_station) - 1
